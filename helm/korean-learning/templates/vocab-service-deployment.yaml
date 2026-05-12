@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vocab-service
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: vocab-service
+    {{- include "korean-learning.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.vocabService.replicas }}
+  selector:
+    matchLabels:
+      app: vocab-service
+  template:
+    metadata:
+      labels:
+        app: vocab-service
+        {{- include "korean-learning.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: vocab-service
+          image: {{ .Values.vocabService.image }}
+          imagePullPolicy: {{ .Values.vocabService.imagePullPolicy }}
+          ports:
+            - containerPort: {{ .Values.vocabService.port }}
+              protocol: TCP
+          env:
+            - name: NODE_ENV
+              value: production
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: DATABASE_URL
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.vocabService.port }}
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.vocabService.port }}
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            {{- toYaml .Values.vocabService.resources | nindent 12 }}

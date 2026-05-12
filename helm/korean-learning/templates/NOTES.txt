@@ -1,0 +1,14 @@
+🎉 Korean Learning Platform deployed!
+
+Services:
+  API Gateway:  http://{{ include "korean-learning.fullname" . }}-api-gateway:{{ .Values.apiGateway.port }}
+  User Service: http://{{ include "korean-learning.fullname" . }}-user-service:{{ .Values.userService.port }}
+  Vocab Service: http://{{ include "korean-learning.fullname" . }}-vocab-service:{{ .Values.vocabService.port }}
+  Quiz Service: http://{{ include "korean-learning.fullname" . }}-quiz-service:{{ .Values.quizService.port }}
+  PostgreSQL:   postgres.{{ .Values.namespace }}.svc.cluster.local:{{ .Values.postgres.port }}
+
+{{- if .Values.ingress.enabled }}
+Access: https://{{ index .Values.ingress.hosts 0 }}
+{{- else }}
+Frontend: http://korean-learning.{{ .Values.namespace }}.svc.cluster.local:{{ .Values.frontend.port }}
+{{- end }}

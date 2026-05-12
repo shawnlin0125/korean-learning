@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway
+  namespace: korean-learning
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-gateway
+  template:
+    metadata:
+      labels:
+        app: api-gateway
+    spec:
+      containers:
+        - name: api-gateway
+          image: api-gateway:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 4000
+          env:
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_SECRET
+                  optional: true
+            - name: USER_SERVICE_URL
+              value: "http://user-service.korean-learning.svc.cluster.local:4001"
+            - name: VOCAB_SERVICE_URL
+              value: "http://vocab-service.korean-learning.svc.cluster.local:4002"
+            - name: QUIZ_SERVICE_URL
+              value: "http://quiz-service.korean-learning.svc.cluster.local:4003"
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "250m"

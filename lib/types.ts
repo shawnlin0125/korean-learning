@@ -48,7 +48,7 @@ export interface ProgressState {
   quizScores: Record<string, number[]>;
   lastVisit: string;
   markLearned: (char: string, status: LearnStatus) => void;
-  recordQuizScore: (category: string, score: number) => void;
+  recordQuizScore: (category: string, score: number) => Promise<void>;
   getMasteredCount: () => number;
   getTotalCount: () => number;
 }

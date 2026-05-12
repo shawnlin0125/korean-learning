@@ -1,0 +1,23 @@
+controller:
+  kind: DaemonSet
+  hostNetwork: true
+  ingressClassResource:
+    name: nginx
+    enabled: true
+    default: false
+    controllerValue: "k8s.io/ingress-nginx"
+  service:
+    enabled: false
+  containerPort:
+    http: 8880
+    https: 8443
+  hostPorts:
+    http: 8880
+    https: 8443
+  extraArgs:
+    http-port: 8880
+    https-port: 8443
+  admissionWebhooks:
+    enabled: false
+  metrics:
+    enabled: false

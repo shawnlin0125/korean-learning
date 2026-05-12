@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: korean-learning
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: korean-learning
+    {{- include "korean-learning.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.frontend.serviceType }}
+  selector:
+    app: korean-learning
+  ports:
+    - port: {{ .Values.frontend.port }}
+      targetPort: {{ .Values.frontend.port }}
+      nodePort: {{ .Values.frontend.nodePort }}
+      protocol: TCP

@@ -1,0 +1,21 @@
+# Development values override
+postgres:
+  password: "dev-password-123"
+
+jwt:
+  secret: "dev-secret-do-not-use-in-prod"
+
+apiGateway:
+  imagePullPolicy: Never
+
+userService:
+  imagePullPolicy: Never
+
+vocabService:
+  imagePullPolicy: Never
+
+quizService:
+  imagePullPolicy: Never
+
+frontend:
+  imagePullPolicy: Never

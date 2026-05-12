@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: quiz-service
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: quiz-service
+    {{- include "korean-learning.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  selector:
+    app: quiz-service
+  ports:
+    - port: {{ .Values.quizService.port }}
+      targetPort: {{ .Values.quizService.port }}
+      protocol: TCP

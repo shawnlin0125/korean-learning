@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vocab-service
+  namespace: korean-learning
+  labels:
+    app: vocab-service
+spec:
+  type: ClusterIP
+  selector:
+    app: vocab-service
+  ports:
+    - port: 4002
+      targetPort: 4002
+      protocol: TCP

@@ -1,0 +1,105 @@
+# Korean Learning Platform - Default Values
+namespace: korean-learning
+
+# PostgreSQL
+postgres:
+  image: postgres:16-alpine
+  storage: 10Gi
+  user: korean_admin
+  password: ""  # 部署時用 --set 覆蓋
+  database: korean_learning
+  port: 5432
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "250m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+
+# JWT
+jwt:
+  secret: "korean-learning-jwt-secret-2026"
+
+# API Gateway
+apiGateway:
+  image: api-gateway:latest
+  imagePullPolicy: IfNotPresent
+  port: 4000
+  replicas: 1
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "100m"
+    limits:
+      memory: "256Mi"
+      cpu: "250m"
+
+# User Service
+userService:
+  image: user-service:latest
+  imagePullPolicy: IfNotPresent
+  port: 4001
+  replicas: 1
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "100m"
+    limits:
+      memory: "256Mi"
+      cpu: "250m"
+
+# Vocab Service
+vocabService:
+  image: vocab-service:latest
+  imagePullPolicy: IfNotPresent
+  port: 4002
+  replicas: 1
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+
+# Quiz Service
+quizService:
+  image: quiz-service:latest
+  imagePullPolicy: IfNotPresent
+  port: 4003
+  replicas: 1
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+
+# Frontend
+frontend:
+  image: korean-learning:latest
+  imagePullPolicy: IfNotPresent
+  port: 3000
+  replicas: 1
+  serviceType: NodePort
+  nodePort: 30080
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+
+# Ingress
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+  hosts:
+    - shawnlin.online
+    - korean.shawnlin.online
+  tls: []

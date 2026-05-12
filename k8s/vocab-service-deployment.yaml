@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vocab-service
+  namespace: korean-learning
+  labels:
+    app: vocab-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vocab-service
+  template:
+    metadata:
+      labels:
+        app: vocab-service
+    spec:
+      containers:
+        - name: vocab-service
+          image: vocab-service:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 4002
+              protocol: TCP
+          env:
+            - name: NODE_ENV
+              value: production
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: DATABASE_URL
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 4002
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 4002
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"

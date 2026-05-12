@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { AuthProvider } from "@/lib/auth-context";
 import Navbar from "@/components/Navbar";
 import "./globals.css";
 
@@ -31,15 +32,17 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-gray-50">
-        <TooltipProvider>
-          <Navbar />
-          <main className="flex-1">
-            {children}
-          </main>
-          <footer className="border-t border-gray-100 bg-white py-6 text-center text-sm text-gray-400">
-            韓文學習平台 — 從零開始，輕鬆學韓文 🇰🇷
-          </footer>
-        </TooltipProvider>
+        <AuthProvider>
+          <TooltipProvider>
+            <Navbar />
+            <main className="flex-1">
+              {children}
+            </main>
+            <footer className="border-t border-gray-100 bg-white py-6 text-center text-sm text-gray-400">
+              韓文學習平台 — 從零開始，輕鬆學韓文 🇰🇷
+            </footer>
+          </TooltipProvider>
+        </AuthProvider>
       </body>
     </html>
   );

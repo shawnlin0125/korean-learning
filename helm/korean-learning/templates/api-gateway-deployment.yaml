@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "korean-learning.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.apiGateway.replicas }}
+  selector:
+    matchLabels:
+      app: api-gateway
+  template:
+    metadata:
+      labels:
+        app: api-gateway
+        {{- include "korean-learning.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: api-gateway
+          image: {{ .Values.apiGateway.image }}
+          imagePullPolicy: {{ .Values.apiGateway.imagePullPolicy }}
+          ports:
+            - containerPort: {{ .Values.apiGateway.port }}
+          env:
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_SECRET
+                  optional: true
+            - name: USER_SERVICE_URL
+              value: "http://user-service.{{ .Values.namespace }}.svc.cluster.local:{{ .Values.userService.port }}"
+            - name: VOCAB_SERVICE_URL
+              value: "http://vocab-service.{{ .Values.namespace }}.svc.cluster.local:{{ .Values.vocabService.port }}"
+            - name: QUIZ_SERVICE_URL
+              value: "http://quiz-service.{{ .Values.namespace }}.svc.cluster.local:{{ .Values.quizService.port }}"
+          resources:
+            {{- toYaml .Values.apiGateway.resources | nindent 12 }}
