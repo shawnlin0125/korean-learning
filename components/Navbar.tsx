@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useProgressStore } from '@/store/progress';
 import { useAuth } from '@/lib/auth-context';
 import { Progress } from '@/components/ui/progress';
@@ -16,6 +16,11 @@ export default function Navbar() {
   const progressPercent = totalCount > 0 ? Math.round((masteredCount / totalCount) * 100) : 0;
   const { user, logout } = useAuth();
   const [showAuth, setShowAuth] = useState(false);
+
+  // 登入/註冊成功後自動關閉 modal
+  useEffect(() => {
+    if (user) setShowAuth(false);
+  }, [user]);
 
   // 麵包屑邏輯
   const segments = pathname.split('/').filter(Boolean);
@@ -123,7 +128,7 @@ export default function Navbar() {
             >
               ✕
             </button>
-            <LoginForm />
+            <LoginForm key={showAuth ? Date.now() : 'closed'} />
           </div>
         </div>
       )}

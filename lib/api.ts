@@ -14,7 +14,10 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({ error: res.statusText }));
-    throw new Error(err.error || 'API Error');
+    const msg = typeof err.error === 'string' ? err.error 
+      : Array.isArray(err.error) ? err.error.map((e: any) => e.message).join(', ')
+      : err.message || 'API Error';
+    throw new Error(msg);
   }
   return res.json();
 }

@@ -57,8 +57,8 @@ export default function LoginForm() {
       setRegLoading(false);
       return;
     }
-    if (regPassword.length < 6) {
-      setRegError('密碼長度至少需要 6 個字元');
+    if (regPassword.length < 8) {
+      setRegError('密碼長度至少需要 8 個字元');
       setRegLoading(false);
       return;
     }
@@ -180,7 +180,7 @@ export default function LoginForm() {
                   value={regPassword}
                   onChange={e => setRegPassword(e.target.value)}
                   required
-                  minLength={6}
+                  minLength={8}
                   autoComplete="new-password"
                 />
               </div>
