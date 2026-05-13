@@ -3,6 +3,12 @@
 # Usage: ./scripts/deploy.sh [production|staging] [tag]
 set -euo pipefail
 
+# Ensure kubectl/helm work in non-interactive SSH sessions
+export KUBECONFIG="${KUBECONFIG:-$HOME/.kube/config}"
+if [ ! -f "$KUBECONFIG" ]; then
+  export KUBECONFIG="/etc/rancher/k3s/k3s.yaml"
+fi
+
 ENV="${1:-staging}"
 TAG="${2:-latest}"
 REGISTRY="${DOCKER_REGISTRY:-shawnlin0125}"
