@@ -1,4 +1,6 @@
 # Korean Learning Platform - Default Values
+# Set via --set or per-environment values file
+environment: production
 namespace: korean-learning
 
 # PostgreSQL

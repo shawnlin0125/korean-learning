@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/lib/auth-context";
 import Navbar from "@/components/Navbar";
+import EnvBanner from "@/components/EnvBanner";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -35,6 +36,7 @@ export default function RootLayout({
         <AuthProvider>
           <TooltipProvider>
             <Navbar />
+            <EnvBanner />
             <main className="flex-1">
               {children}
             </main>

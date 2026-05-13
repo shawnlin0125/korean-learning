@@ -176,7 +176,7 @@ export default function LoginForm() {
                 <Input
                   id="reg-password"
                   type="password"
-                  placeholder="至少 6 個字元"
+                  placeholder="至少 8 個字元"
                   value={regPassword}
                   onChange={e => setRegPassword(e.target.value)}
                   required

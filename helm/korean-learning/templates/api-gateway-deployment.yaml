@@ -37,3 +37,15 @@ spec:
               value: "http://quiz-service.{{ .Values.namespace }}.svc.cluster.local:{{ .Values.quizService.port }}"
           resources:
             {{- toYaml .Values.apiGateway.resources | nindent 12 }}
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.apiGateway.port }}
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.apiGateway.port }}
+            initialDelaySeconds: 5
+            periodSeconds: 10

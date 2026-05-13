@@ -1,0 +1,74 @@
+# Staging environment
+# Usage: helm install korean-staging . -f values/staging.yaml --namespace korean-staging --create-namespace
+# CPU/memory requests 極低，避免單節點資源不足（2026-05-13 再減半）
+environment: staging
+namespace: korean-staging
+
+postgres:
+  storage: 5Gi
+  password: "staging-password-456"
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "5m"
+    limits:
+      memory: "128Mi"
+      cpu: "300m"
+
+jwt:
+  secret: "staging-jwt-secret-2026"
+
+apiGateway:
+  imagePullPolicy: Never
+  resources:
+    requests:
+      memory: "32Mi"
+      cpu: "5m"
+    limits:
+      memory: "128Mi"
+      cpu: "250m"
+
+userService:
+  imagePullPolicy: Never
+  resources:
+    requests:
+      memory: "32Mi"
+      cpu: "5m"
+    limits:
+      memory: "128Mi"
+      cpu: "250m"
+
+vocabService:
+  imagePullPolicy: Never
+  resources:
+    requests:
+      memory: "32Mi"
+      cpu: "5m"
+    limits:
+      memory: "256Mi"
+      cpu: "500m"
+
+quizService:
+  imagePullPolicy: Never
+  resources:
+    requests:
+      memory: "32Mi"
+      cpu: "5m"
+    limits:
+      memory: "256Mi"
+      cpu: "500m"
+
+frontend:
+  imagePullPolicy: Never
+  serviceType: ClusterIP
+  resources:
+    requests:
+      memory: "48Mi"
+      cpu: "5m"
+    limits:
+      memory: "256Mi"
+      cpu: "500m"
+
+ingress:
+  hosts:
+    - korean-staging.shawnlin.online

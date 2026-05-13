@@ -1,0 +1,31 @@
+# Production environment
+# Usage: helm upgrade korean-learning . -f values/production.yaml --namespace korean-learning
+environment: production
+namespace: korean-learning
+
+postgres:
+  storage: 10Gi
+  password: ""  # 部署時用 --set postgres.password=<strong-password> 覆蓋
+
+jwt:
+  secret: ""  # 部署時用 --set jwt.secret=<strong-secret> 覆蓋
+
+apiGateway:
+  imagePullPolicy: IfNotPresent
+
+userService:
+  imagePullPolicy: IfNotPresent
+
+vocabService:
+  imagePullPolicy: IfNotPresent
+
+quizService:
+  imagePullPolicy: IfNotPresent
+
+frontend:
+  imagePullPolicy: IfNotPresent
+
+ingress:
+  hosts:
+    - shawnlin.online
+    - korean.shawnlin.online
