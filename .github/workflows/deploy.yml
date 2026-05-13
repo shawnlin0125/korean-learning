@@ -13,13 +13,14 @@ on:
         options: ['staging', 'production']
 
 env:
-  REGISTRY: docker.io
   DOCKER_REGISTRY: ${{ secrets.DOCKER_USERNAME }}
 
 jobs:
-  build-and-deploy:
+  build:
+    name: Build ${{ matrix.service.name }}
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         service:
           - { name: api-gateway, path: services/api-gateway }
@@ -53,10 +54,8 @@ jobs:
           cache-to: type=gha,mode=max
 
   deploy:
-    needs: build-and-deploy
+    needs: build
     runs-on: ubuntu-latest
-    environment:
-      name: ${{ github.event.inputs.environment || 'staging' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -67,18 +66,11 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
+            set -e
             cd ~/projects/korean-learning
             git pull origin main
-            
+
             TAG="${{ github.sha }}"
             ENV="${{ github.event.inputs.environment || 'staging' }}"
-            
+
             bash scripts/deploy.sh "$ENV" "$TAG"
-            
-            echo ""
-            echo "=== Deployment Status ==="
-            case "$ENV" in
-              production) NS="korean-learning" ;;
-              *) NS="korean-staging" ;;
-            esac
-            kubectl get pods -n "$NS"
